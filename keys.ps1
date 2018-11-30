@@ -341,7 +341,7 @@ $functions =  {
 		}
 	}
 	
-	function MaintainPersistence
+	function script:MaintainPersistence
 	{
 		while($true)
 		{
