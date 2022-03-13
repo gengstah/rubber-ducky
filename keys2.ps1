@@ -1,9 +1,9 @@
 [CmdletBinding(DefaultParameterSetName="noexfil")] Param( 
-    [Parameter(Position = 0, Mandatory = $False, Parametersetname="exfil")]
+    [Parameter(Position = 0, Mandatory = $False, Parametersetname="username")]
     [String]
     $username = "null",
 
-    [Parameter(Position = 1, Mandatory = $False, Parametersetname="exfil")]
+    [Parameter(Position = 1, Mandatory = $False, Parametersetname="password")]
     [String]
     $password = "null"
 )
